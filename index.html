@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password</title>
+    
+</head>
+
+<body>
+    
+    <button id="generate">Generate Password</button>
+    
+    <script>
+        function password_length_prompt() {
+            let pass_len = parseInt(prompt('Enter a password length between 8 and 128 characters:'));
+            if (isNaN(pass_len) || pass_len < 8 || pass_len > 128 ) {
+                alert('Please Enter a number between 8 and 128.');
+                return password_length_prompt();
+            }else{
+                return pass_len;
+            }
+            
+        }
+
+        function pass_checklist_prompt() {
+            var special = prompt('Include special characters?\n "y" to include').toLocaleLowerCase();
+            var lowercase = prompt('Include lowercase characters?\n "y" to include').toLocaleLowerCase();
+            var uppercase = prompt('Include uppercase characters?\n "y" to include').toLocaleLowerCase();
+            var numeric = prompt('Include numeric characters?\n "y" to include').toLocaleLowerCase();
+            
+
+            if (lowercase!="y" && uppercase!="y" && numeric!="y" && special!="y") {
+                alert('You must select at least one character type.');
+                return pass_checklist_prompt();
+            }
+            var ret_arr={
+                special,
+                lowercase,
+                uppercase,
+                numeric
+            }
+            return ret_arr;
+        }
+
+    
+
+        document.getElementById('generate').addEventListener('click', () => {
+            var length = password_length_prompt();
+            var pass_checklist = pass_checklist_prompt();
+            
+            var options = {
+                lowercase: 'abcdefghijklmnopqrstuvwxyz',
+                uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                numeric: '0123456789',
+                special: '`~!@#$%^&*()_+=-[]{}\\|;:\"\',<.>/?'
+            };
+
+            let password = '';
+            let available_options = '';
+
+            for (var type in pass_checklist) {
+                if (pass_checklist[type] == "y") {
+                    
+                    available_options += options[type];
+                }
+            }
+
+            for (let i = 0; i < length; i++) {
+                password += available_options[Math.floor(Math.random() * available_options.length)];
+            }
+            
+            
+            alert("Password:"+ password);
+
+        });
+
+    </script>
+</body>
+
+</html>
